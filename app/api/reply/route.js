@@ -5,33 +5,35 @@ apiKey: process.env.OPENAI_API_KEY,
 });
 
 export async function POST(req) {
-try {
+
 const body = await req.json();
 
-const completion = await openai.chat.completions.create({
-  model: "gpt-4.1-mini",
-  messages: [
-    {
-      role: "system",
-      content: "あなたは美容サロンの口コミ返信担当です。",
-    },
-    {
-      role: "user",
-      content: body.review,
-    },
-  ],
+const completion =
+await openai.chat.completions.create({
+model: "gpt-4.1-mini",
+messages: [
+{
+role: "system",
+content:
+"あなたは美容室の丁寧な口コミ返信担当です。",
+},
+{
+role: "user",
+content: body.review,
+},
+],
 });
 
-return Response.json({
-  reply: completion.choices[0].message.content,
-});
-
-} catch (error) {
-console.log(error);
-
-return Response.json({
-  reply: "APIエラー",
-});
-
+return new Response(
+JSON.stringify({
+reply:
+completion.choices[0].message.content,
+}),
+{
+headers: {
+"Content-Type": "application/json",
+"Access-Control-Allow-Origin": "*",
+},
 }
+);
 }
