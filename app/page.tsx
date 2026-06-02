@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function Home() {
 const [review, setReview] = useState("");
 const [reply, setReply] = useState("");
+const [nickname, setNickname] = useState("");
 
 const generateReply = async () => {
 const res = await fetch("/api/reply", {
@@ -14,6 +15,7 @@ headers: {
 },
 body: JSON.stringify({
 review,
+nickname,
 }),
 });
 
@@ -26,7 +28,18 @@ setReply(data.reply);
 return (
 <main style={{ padding: 40 }}>
 口コミAI返信
-
+<input
+value={nickname}
+onChange={(e) =>
+setNickname(e.target.value)
+}
+placeholder="ニックネーム"
+style={{
+width: "100%",
+height: 40,
+marginTop: 20,
+}}
+/>
   <textarea
     value={review}
     onChange={(e) => setReview(e.target.value)}
